@@ -15,10 +15,7 @@ export default new Vuex.Store({
       console.log('localStorage中存储的随机码', token)
       state.token = token
       localStorage.setItem('token', token)
-    },
-    resetState: (state) => {
-      state.token = ''
-  }
+    }
   },
   actions: {
   },

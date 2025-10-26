@@ -27,9 +27,8 @@
         </div>
       </el-header>
       <el-main>
-        <router-view>
-
-        </router-view>
+        <tabs></tabs>
+        <router-view></router-view>
       </el-main>
     </el-container>
   </el-container>
@@ -37,16 +36,12 @@
 
 <script>
   import SideMenu from "./inc/SideMenu";
-  import login from "@/views/Login.vue";
+  import Tabs from "./inc/Tabs";
   export default {
     name:"Home",
-    computed: {
-      login() {
-        return login
-      }
-    },
     components: {
-      SideMenu
+      SideMenu,
+      Tabs
     },
     data(){
       return{
@@ -71,7 +66,7 @@
           localStorage.clear();
           sessionStorage.clear();
           this.$store.commit('resetState')
-          this.$router.push('/login')
+          this.$router.push('/login').catch(() => {});
         })
       }
     }
@@ -120,7 +115,6 @@
 .el-main {
   color: #333;
   text-align: center;
-  line-height: 160px;
   padding: 0;
 }
 

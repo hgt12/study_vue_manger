@@ -28,6 +28,9 @@
       </el-header>
       <el-main>
         <tabs></tabs>
+        <div>
+      <router-view> </router-view>
+        </div>
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -114,7 +117,7 @@
 
 .el-main {
   color: #333;
-  text-align: center;
+  text-align: left;
   padding: 0;
 }
 

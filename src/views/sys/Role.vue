@@ -23,11 +23,22 @@
             {required: true, messages: '请选择状态', trigger: 'blur'}
           ]
         },
-        tableData: []
+        tableData: [],
+        multipleSelection: [],
+        permDialogVisible: false,
+        permForm:{},
+        defaultProps: {
+          children: 'children',
+          label: 'name'
+        },
+        permTreedata: []
       }
     },
     created() {
-      this.getRoleList()
+      this.getRoleList(),
+      this.$axios.get("/sys/menu/list").then((res) => {
+        this.permTreedata = res.data.data
+      })
     },
     methods: {
       toggleSelection(rows) {
@@ -41,7 +52,7 @@
       },
       handleSelectionChange(val) {
         this.multipleSelection = val;
-        this.delState= val.length == 0
+        this.delState= val.length === 0
       },
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
@@ -131,6 +142,30 @@
             }
           })
         })
+      },
+      permHandle(id) {
+        this.permDialogVisible = true
+        this.$nextTick(() => { //等待对话框和树组件渲染完成
+          this.$axios.get("/sys/role/info/"+id).then((res) => {
+            this.$refs.permTree.setCheckedKeys(res.data.data.menuIds)
+            this.permForm = res.data.data
+          })
+        })
+      },
+      submitPermFormHandle(formName){
+        var menuIds = this.$refs.permTree.getCheckedKeys()
+        console.log("提交时勾选的菜单id",menuIds)
+        this.$axios.post("/sys/role/perm/"+this.permForm.id,menuIds).then((res) => {
+          this.$message({
+            showClose: true,
+            message: "恭喜，操作成功",
+            type: 'success',
+            onClose:()=>{
+              this.getRoleList()
+            }
+          })
+          this.permDialogVisible = false
+        })
       }
     }
   }
@@ -196,7 +231,7 @@
           prop="Operate"
           label="操作">
         <template slot-scope="scope">
-          <el-button type="text" @click="editHandle(scope.row.id)">分配权限</el-button>
+          <el-button type="text" @click="permHandle(scope.row.id)">分配权限</el-button>
           <el-divider direction="vertical"></el-divider>
 
           <el-button type="text" @click="editHandle(scope.row.id)">编辑</el-button>
@@ -251,6 +286,24 @@
         </el-form-item>
       </el-form>
 
+    </el-dialog>
+    <el-dialog title="分配权限" :visible.sync="permDialogVisible" width="600px">
+        <el-form :model="permForm">
+          <el-tree
+              :data="permTreedata"
+              show-checkbox
+              ref="permTree"
+              :default-expand-all=true
+              node-key="id"
+              :check-strictly=true
+              :props="defaultProps">
+          </el-tree>
+        </el-form>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="permDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="submitPermFormHandle('permForm')">确定</el-button>
+      </span>
     </el-dialog>
   </div>
 

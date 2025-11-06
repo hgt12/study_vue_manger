@@ -83,7 +83,7 @@
         this.resetForm('editForm')
       },
       delHandle(id) {
-        this.$axios.post("/sys/menu/delete"+id).then((res) => {
+        this.$axios.post("/sys/menu/delete/"+id).then((res) => {
           this.$message({
             showClose: true,
             message:'删除成功',

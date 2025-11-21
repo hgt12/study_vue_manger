@@ -12,7 +12,7 @@ Vue.prototype.$axios = axios;
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 
-require("./mock.js")
+//require("./mock.js")
 
 new Vue({
   router,

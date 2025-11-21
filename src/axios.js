@@ -2,6 +2,8 @@ import axios from "axios";
 import router from "./router";
 import Element from "element-ui"
 
+axios.defaults.baseURL = "http://localhost:8081";//添加后端访问地址
+
 // 创建一个自定义的axios实例，用于统一配置请求参数
 const request = axios.create({
     timeout: 5000,

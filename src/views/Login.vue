@@ -19,11 +19,11 @@
           <el-input v-model="loginFrom.username" style="width: 390px; float: left"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="loginFrom.password" style="width: 390px; float: left"></el-input>
+          <el-input v-model="loginFrom.password" type="password" style="width: 390px; float: left"></el-input>
         </el-form-item>
         <el-form-item label="验证码" prop="code">
           <el-input v-model="loginFrom.code" style="width: 260px; float: left"></el-input>
-          <el-image :src="codeImg" class="codeImg"></el-image>
+          <el-image :src="codeImg" class="codeImg" @click="getCaptcha"></el-image>
         </el-form-item>
         <el-form-item style="float: left; position: relative; left: 10%; margin-top: 30px">
           <el-button type="primary" @click="submitForm('loginFrom')">登录</el-button>
@@ -35,14 +35,16 @@
 </template>
 
 <script>
+import qs from 'qs'
+
 export default {
   name: 'login',
   data() {
     return {
       loginFrom: {
-        username: '',
-        password: '',
-        code: '',
+        username: 'admin',
+        password: '123456',
+        code: '12345',
         token:''
       },
       rules: {
@@ -67,10 +69,9 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$axios.post('/login',this.loginFrom).then(({headers,data}) => {
-            console.log("headers:",headers)
-            const jwt = data.headers['authorization'] || data.headers['Authorization']
-            console.log("用户点击登录时，提交的随机码",jwt)
+          this.$axios.post('/login?' + qs.stringify(this.loginFrom))
+              .then(res => {
+            const jwt = res.headers['authorization'];
             this.$store.commit('SET_TOKEN',jwt)
             this.$router.push('/index');//进入index页面
           })
@@ -92,6 +93,7 @@ export default {
           this.loginFrom.token = res.data.data.token || ''
           console.log("mock(模拟服务器生成的随机码：)",this.loginFrom.token)
           this.codeImg = res.data.data.captchaImg
+          this.loginFrom.code = ''
         }
       })
           .catch(err => {

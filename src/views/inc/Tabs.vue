@@ -16,7 +16,7 @@
           this.$store.state.menu.editableTabs = val
         }
       },
-      editorTabsValue:{
+      editableTabsValue:{
         get(){
           return this.$store.state.menu.editableTabsValue
         },

@@ -132,7 +132,7 @@
           })
         }
         console.log("ids:",ids)
-        this.$axios.post("/sys/role/delete/"+ids).then((res) => {
+        this.$axios.post("/sys/role/delete/", ids).then((res) => {
           this.$message({
             showClose: true,
             message:'删除成功',
@@ -146,6 +146,8 @@
       permHandle(id) {
         this.permDialogVisible = true
         this.$nextTick(() => { //等待对话框和树组件渲染完成
+          // 先清空之前的选中状态
+          this.$refs.permTree.setCheckedKeys([])
           this.$axios.get("/sys/role/info/"+id).then((res) => {
             this.$refs.permTree.setCheckedKeys(res.data.data.menuIds)
             this.permForm = res.data.data
@@ -222,8 +224,8 @@
           prop="statu"
           label="状态">
         <template slot-scope="scope">
-          <el-tag size="small" v-if="scope.row.statu === 1" type="success">正常</el-tag>
-          <el-tag size="small" v-if="scope.row.statu === 0" type="danger">禁用</el-tag>
+          <el-tag size="small" v-if="scope.row.statu == 1" type="success">正常</el-tag>
+          <el-tag size="small" v-if="scope.row.statu == 0" type="danger">禁用</el-tag>
         </template>
       </el-table-column>
 
@@ -275,8 +277,8 @@
 
         <el-form-item label="状态" prop="statu" label-width="100px">
           <el-radio-group v-model="editForm.statu">
-            <el-radio :label=0>禁用</el-radio>
-            <el-radio :label=1>正常</el-radio>
+            <el-radio label="0">禁用</el-radio>
+            <el-radio label="1">正常</el-radio>
           </el-radio-group>
         </el-form-item>
 

@@ -109,8 +109,8 @@ router.beforeEach((to, from, next) => {
             hasRoute = true
             store.commit("changeRouteState", hasRoute)
             
-            // 菜单数据加载完成后再进行路由跳转
-            next()
+            // 菜单数据加载完成后，重新导航到目标路由（让新添加的路由生效）
+            next({ ...to, replace: true })
         }).catch(error => {
             console.error('获取菜单数据失败:', error)
             // 如果获取菜单失败，跳转到登录页

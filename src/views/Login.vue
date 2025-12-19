@@ -71,12 +71,12 @@ export default {
         if (valid) {
           this.$axios.post('/login?' + qs.stringify(this.loginFrom))
               .then(res => {
-            const jwt = res.headers['authorization'];
-            this.$store.commit('SET_TOKEN',jwt)
-            this.$router.push('/index').catch(() => {});//进入index页面
-          })
+                const jwt = res.headers['authorization'];
+                this.$store.commit('SET_TOKEN', jwt)
+                this.$router.push('/index').catch(() => {})
+              })
               .catch(error => {
-                console.log('登录失败',error)
+                console.log('登录失败', error)
                 this.getCaptcha()
               })
         } else {

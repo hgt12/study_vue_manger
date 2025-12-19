@@ -8,6 +8,12 @@
 
         },
         editFormRules: {
+          component: [
+            {required: true, message: '请选择填写菜单组件', trigger: 'blur'}
+          ],
+          path: [
+            {required: true, messages: '请填写菜单URL', trigger: 'blur'}
+          ],
           parentId: [
             {required: true, message: '请选择上级菜单', trigger: 'blur'}
           ],

@@ -42,9 +42,9 @@ export default {
   data() {
     return {
       loginFrom: {
-        username: 'admin',
-        password: '123456',
-        code: '12345',
+        username: '',
+        password: '',
+        code: '',
         token:''
       },
       rules: {
@@ -73,10 +73,11 @@ export default {
               .then(res => {
             const jwt = res.headers['authorization'];
             this.$store.commit('SET_TOKEN',jwt)
-            this.$router.push('/index');//进入index页面
+            this.$router.push('/index').catch(() => {});//进入index页面
           })
               .catch(error => {
                 console.log('登录失败',error)
+                this.getCaptcha()
               })
         } else {
           console.log('error submit!!');

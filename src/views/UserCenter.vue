@@ -78,7 +78,7 @@
                                     this.$refs[formName].resetFields();
                                 }
                             });
-                        })
+                        }).catch(err => {})
 
                     } else {
                         console.log('error submit!!');

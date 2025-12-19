@@ -54,7 +54,7 @@
       },
       clickTab(target) {
         if(this.$route.name !== target.name){
-           this.$router.push({name: target.name})
+           this.$router.push({name: target.name}).catch(() => {})
         }
         // 更新当前激活的标签页状态
         this.editableTabsValue = target.name

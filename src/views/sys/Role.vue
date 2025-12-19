@@ -35,10 +35,10 @@
       }
     },
     created() {
-      this.getRoleList(),
-      this.$axios.get("/sys/menu/list").then((res) => {
-        this.permTreedata = res.data.data
-      })
+      this.getRoleList()
+      // this.$axios.get("/sys/menu/list").then((res) => {
+      //   this.permTreedata = res.data.data
+      // }).catch(err => {})
     },
     methods: {
       toggleSelection(rows) {
@@ -140,11 +140,16 @@
             onClose:()=>{
               this.getRoleList()
             }
-          })
-        })
+          });
+        }).catch(err => {})
       },
       permHandle(id) {
         this.permDialogVisible = true
+
+        this.$axios.get("/sys/menu/list").then((res) => {
+          this.permTreedata = res.data.data
+        }).catch(err => {})
+
         this.$nextTick(() => { //等待对话框和树组件渲染完成
           // 先清空之前的选中状态
           this.$refs.permTree.setCheckedKeys([])

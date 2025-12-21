@@ -2,6 +2,10 @@
 
 ## Project setup
 ```
+npm install
+
+npm install -g yarn
+
 yarn install
 ```
 
